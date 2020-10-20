@@ -19,11 +19,16 @@ st.image(
 
 preview_count = 9
 warning_count = 10000
+
+import spacy
+from spacy.cli import download, link
+download("en")
+
 # TODO: Figure out hash function which can be used with corpus objects
 def make_corpus(
     df: pd.DataFrame, col_name: str, min_token_count: int
 ) -> textacy.Corpus:
-    en = textacy.load_spacy_lang("en_core_web_lg", disable=("parser","ner", "tagger", "textcat"))
+    en = textacy.load_spacy_lang("en", disable=("parser","ner", "tagger", "textcat"))
     spacy_records = df[col_name].apply(lambda x: textacy.make_spacy_doc(x, lang=en))
     long_records = [
         record for record in spacy_records if len(record) >= min_token_count
@@ -71,10 +76,6 @@ with st.sidebar.beta_expander("See Explanation on TSV files"):
         "https://i.ibb.co/KFzdyTv/Screen-Shot-2020-10-20-at-11-42-48-AM.png",
         caption="Download as TSV is the last option in Google Sheets",
     )
-
-import spacy
-from spacy.cli import download, link
-download("en_core_web_lg")
 
 @st.cache(suppress_st_warning=True)
 def file_io(uploaded_file):
