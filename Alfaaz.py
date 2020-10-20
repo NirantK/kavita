@@ -78,6 +78,8 @@ download("en")
 @st.cache
 def file_io(uploaded_file):
     df = pd.read_csv(uploaded_file, sep="\t")
+    if len(df) > 20000:
+        st.warning(f"Your dataframe has {len(df)} records with {len(df.columns)} columns.\nConsider dropping some columns or uploading fewer rows for faster analysis.")
     return df
 
 
@@ -103,8 +105,8 @@ if uploaded_file is not None:
             min_value=2,
             max_value=10,
         )
-    print("Making Corpus Now!")
-    corpus = make_corpus(df, col_name=col_name, min_token_count=min_token_count)
+    with st.runner("Making Corpus Now!"):
+        corpus = make_corpus(df, col_name=col_name, min_token_count=min_token_count)
     st.write(
         "Records for Analysis:",
         corpus.n_docs,
