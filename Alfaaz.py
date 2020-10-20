@@ -73,8 +73,7 @@ with st.sidebar.beta_expander("See Explanation on TSV files"):
 
 import spacy
 from spacy.cli import download, link
-download("en_core_web_lg")
-link("en_core_web_lg", "en", "--force")
+download("en")
 
 @st.cache
 def file_io(uploaded_file):
