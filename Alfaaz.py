@@ -2,7 +2,6 @@ import collections
 import json
 import time
 from typing import Dict, List, Tuple
-
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -72,6 +71,9 @@ with st.sidebar.beta_expander("See Explanation on TSV files"):
         caption="Download as TSV is the last option in Google Sheets",
     )
 
+import spacy
+from spacy.cli import download
+download("en_core_web_lg")
 
 @st.cache
 def file_io(uploaded_file):
