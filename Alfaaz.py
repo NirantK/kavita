@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import textacy
+import spacy
 import textacy.similarity
 import textacy.tm
 import textacy.vsm
@@ -75,7 +76,7 @@ import spacy
 from spacy.cli import download, link
 download("en")
 
-@st.cache
+@st.cache(suppress_st_warning=True)
 def file_io(uploaded_file):
     df = pd.read_csv(uploaded_file, sep="\t")
     if len(df) > 20000:
@@ -95,27 +96,6 @@ if uploaded_file is not None:
     st.markdown("### Preparing for Analysis")
     col_name = st.radio("Select Text Column", options=df.columns)
 
-    with st.beta_expander("Change Minimum Sentence Length"):
-        st.info(
-            "Use a large number for quick analysis in the beginning (>5) and reduce when you are going for depth"
-        )
-        min_token_count = st.number_input(
-            "Analyze sentences which have atleast how many tokens?",
-            value=4,
-            min_value=2,
-            max_value=10,
-        )
-    with st.spinner("Making Corpus Now!"):
-        corpus = make_corpus(df, col_name=col_name, min_token_count=min_token_count)
-    st.write(
-        "Records for Analysis:",
-        corpus.n_docs,
-        "Total Sentences:",
-        corpus.n_sents,
-        "Total Tokens:",
-        corpus.n_tokens,
-    )
-
 mode = st.sidebar.radio(
     "Analytics Mode:",
     options=[
@@ -126,6 +106,34 @@ mode = st.sidebar.radio(
         "Generate Sentences",
     ],
 )
+
+with st.beta_expander("Change Minimum Sentence Length"):
+        st.info(
+            "Use a large number for quick analysis in the beginning (>5) and reduce when you are going for depth"
+        )
+        min_token_count = st.number_input(
+            "Analyze sentences which have atleast how many tokens?",
+            value=4,
+            min_value=2,
+            max_value=10,
+        )
+
+if uploaded_file is not None:        
+    
+    with st.spinner("Making Corpus Now!"):
+        raw_texts=list(df[col_name])
+        nlp=spacy.load('en', disable=['tagger','parser','ner'])
+        docs=[nlp(txt) for txt in raw_texts]
+        corpus=textacy.Corpus(lang=nlp, docs=docs)
+    
+    st.write(
+        "Records for Analysis:",
+        corpus.n_docs,
+        "Total Sentences:",
+        corpus.n_sents,
+        "Total Tokens:",
+        corpus.n_tokens,
+    )
 
 if mode == "Word Frequencies" and uploaded_file is not None:
     st.markdown("## Word Frequencies Exploration")
@@ -142,7 +150,7 @@ if mode == "Word Frequencies" and uploaded_file is not None:
     freq_dict = {
         k: v
         for k, v in sorted(freq_dict.items(), key=lambda item: item[1], reverse=True)
-        if v >= 2
+        if v >= min_token_count
     }
 
     index_key = "Frequency"
