@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import textacy
-import spacy
 import textacy.similarity
 import textacy.tm
 import textacy.vsm
@@ -14,15 +13,22 @@ from fastcore.utils import Path
 from textacy.spacier.doc_extensions import get_preview, get_tokens
 
 st.title("Alfaaz: Text Exploration Tools")
-st.image(image="https://verloop.io/wp-content/uploads/2020/08/cropped-VP.io-Website-Grey@2x.png")
+st.image(
+    image="https://verloop.io/wp-content/uploads/2020/08/cropped-VP.io-Website-Grey@2x.png"
+)
 
 preview_count = 9
 warning_count = 10000
 # TODO: Figure out hash function which can be used with corpus objects
-def make_corpus(df: pd.DataFrame, col_name: str, min_token_count: int) -> textacy.Corpus:
-    spacy_records = df[col_name].apply(lambda x: textacy.make_spacy_doc(x, lang="en"))
-    long_records = [record for record in spacy_records if len(record) >= min_token_count]
-    corpus = textacy.Corpus("en", data=list(long_records))
+def make_corpus(
+    df: pd.DataFrame, col_name: str, min_token_count: int
+) -> textacy.Corpus:
+    en = textacy.load_spacy_lang("en_core_web_lg", disable=("parser","ner", "tagger", "textcat"))
+    spacy_records = df[col_name].apply(lambda x: textacy.make_spacy_doc(x, lang=en))
+    long_records = [
+        record for record in spacy_records if len(record) >= min_token_count
+    ]
+    corpus = textacy.Corpus(lang=en, data=list(long_records))
     return corpus
 
 
@@ -48,10 +54,16 @@ import io
 
 st.set_option("deprecation.showfileUploaderEncoding", False)
 
-uploaded_file = st.sidebar.file_uploader("Upload a Tab Separated File", type=["tsv"], accept_multiple_files=False)
-st.sidebar.markdown("If you see an error, please upload a Tab Separated Value (tsv) file.")
+uploaded_file = st.sidebar.file_uploader(
+    "Upload a Tab Separated File", type=["tsv"], accept_multiple_files=False
+)
+st.sidebar.markdown(
+    "If you see an error, please upload a Tab Separated Value (tsv) file."
+)
 with st.sidebar.beta_expander("See Explanation on TSV files"):
-    st.markdown("TSV files are basically same as csv files, but use a tab character to separate columns.")
+    st.markdown(
+        "TSV files are basically same as csv files, but use a tab character to separate columns."
+    )
     st.markdown(
         "Since lot of our input might have ',' in text, it's useful to use a different character for separating columns."
     )
@@ -62,24 +74,22 @@ with st.sidebar.beta_expander("See Explanation on TSV files"):
 
 import spacy
 from spacy.cli import download, link
-
-download("en")
-
+download("en_core_web_lg")
 
 @st.cache(suppress_st_warning=True)
 def file_io(uploaded_file):
     df = pd.read_csv(uploaded_file, sep="\t")
     if len(df) > 20000:
-        st.warning(
-            f"Your dataframe has {len(df)} records with {len(df.columns)} columns.\nConsider dropping some columns or uploading fewer rows for faster analysis."
-        )
+        st.warning(f"Your dataframe has {len(df)} records with {len(df.columns)} columns.\nConsider dropping some columns or uploading fewer rows for faster analysis.")
     return df
 
 
 if uploaded_file is not None:
     st.markdown("## Data Preview")
     df = file_io(uploaded_file)
-    st.markdown(f"Here are {preview_count} random samples from the input of {len(df)} rows")
+    st.markdown(
+        f"Here are {preview_count} random samples from the input of {len(df)} rows"
+    )
     preview_df = df.sample(preview_count, random_state=37)
     st.write(preview_df)
 
@@ -98,22 +108,20 @@ mode = st.sidebar.radio(
 )
 
 with st.beta_expander("Change Minimum Sentence Length"):
-    st.info("Use a large number for quick analysis in the beginning (>5) and reduce when you are going for depth")
-    min_token_count = st.number_input(
-        "Analyze sentences which have atleast how many tokens?",
-        value=4,
-        min_value=2,
-        max_value=10,
-    )
+        st.info(
+            "Use a large number for quick analysis in the beginning (>5) and reduce when you are going for depth"
+        )
+        min_token_count = st.number_input(
+            "Analyze sentences which have atleast how many tokens?",
+            value=4,
+            min_value=2,
+            max_value=10,
+        )
 
-if uploaded_file is not None:
-
+if uploaded_file is not None:        
     with st.spinner("Making Corpus Now!"):
-        raw_texts = list(df[col_name])
-        nlp = spacy.load("en", disable=["tagger", "parser", "ner"])
-        docs = [nlp(str(txt)) for txt in raw_texts]
-        corpus = textacy.Corpus(lang=nlp, docs=docs)
-
+        corpus = make_corpus(df, col_name=col_name, min_token_count=min_token_count)
+    
     st.write(
         "Records for Analysis:",
         corpus.n_docs,
@@ -127,12 +135,18 @@ if mode == "Word Frequencies" and uploaded_file is not None:
     st.markdown("## Word Frequencies Exploration")
 
     if st.sidebar.checkbox("Ignore Case (Recommended)", value=True):
-        freq_dict: Dict = corpus.word_counts(as_strings=True, normalize="lower", filter_nums=True, filter_punct=True)
+        freq_dict: Dict = corpus.word_counts(
+            as_strings=True, normalize="lower", filter_nums=True, filter_punct=True
+        )
     else:
-        freq_dict: Dict = corpus.word_counts(as_strings=True, filter_nums=True, filter_punct=True)
+        freq_dict: Dict = corpus.word_counts(
+            as_strings=True, filter_nums=True, filter_punct=True
+        )
 
     freq_dict = {
-        k: v for k, v in sorted(freq_dict.items(), key=lambda item: item[1], reverse=True) if v >= min_token_count
+        k: v
+        for k, v in sorted(freq_dict.items(), key=lambda item: item[1], reverse=True)
+        if v >= 2
     }
 
     index_key = "Frequency"
@@ -154,11 +168,17 @@ if mode == "Word Frequencies" and uploaded_file is not None:
     with st.beta_expander("Filter By Category Values"):
         col_list = list(df.columns)
         col_list.remove(col_name)
-        filter_col_name = st.selectbox("Select Column which you want to filter by", options=col_list)
+        filter_col_name = st.selectbox(
+            "Select Column which you want to filter by", options=col_list
+        )
         if filter_col_name is not None:
-            filter_val = st.selectbox("Select Values to Filter by", options=df[filter_col_name].unique())
+            filter_val = st.selectbox(
+                "Select Values to Filter by", options=df[filter_col_name].unique()
+            )
             filter_df = pd.DataFrame(df[df[filter_col_name] == filter_val][col_name])
-            filter_corpus = make_corpus(filter_df, col_name=col_name, min_token_count=min_token_count)
+            filter_corpus = make_corpus(
+                filter_df, col_name=col_name, min_token_count=min_token_count
+            )
             st.info(
                 f"You are exploring {filter_corpus.n_docs} text queries. \n This is a subset of total -- where {filter_col_name} value is: {filter_val}"
             )
@@ -168,9 +188,15 @@ if mode == "Word Frequencies" and uploaded_file is not None:
                 as_strings=True, normalize="lower", filter_nums=True, filter_punct=True
             )
             filter_freq_dict = {
-                k: v for k, v in sorted(filter_freq_dict.items(), key=lambda item: item[1], reverse=True) if v >= 2
+                k: v
+                for k, v in sorted(
+                    filter_freq_dict.items(), key=lambda item: item[1], reverse=True
+                )
+                if v >= 2
             }
-            filter_freq_df = pd.DataFrame(filter_freq_dict, index=[index_key]).transpose()
+            filter_freq_df = pd.DataFrame(
+                filter_freq_dict, index=[index_key]
+            ).transpose()
             left_filter, right_filter = st.beta_columns([2, 1])
             left_filter.bar_chart(filter_freq_df)
             word_display_count = min(10, len(filter_freq_df))
@@ -196,12 +222,17 @@ if mode == "Topics" and uploaded_file is not None:
             max_df=0.95,
         )
         doc_term_matrix = vectorizer.fit_transform(
-            (doc._.to_terms_list(ngrams=ngrams, entities=entities, as_strings=True) for doc in corpus)
+            (
+                doc._.to_terms_list(ngrams=ngrams, entities=entities, as_strings=True)
+                for doc in corpus
+            )
         )
         return vectorizer, doc_term_matrix
 
     ngrams = st.sidebar.number_input("ngrams:", value=2, min_value=1, max_value=3)
-    n_topics = st.sidebar.number_input("How many topics do you want to explore?", value=5, min_value=2, max_value=10)
+    n_topics = st.sidebar.number_input(
+        "How many topics do you want to explore?", value=5, min_value=2, max_value=10
+    )
 
     if corpus.n_docs > warning_count:
         st.warning(
@@ -209,7 +240,9 @@ if mode == "Topics" and uploaded_file is not None:
         )
 
     with st.spinner(text="Building a Topic Model"):
-        vectorizer, doc_term_matrix = make_doc_term_matrix(corpus, min_freq_count=min_token_count, ngrams=ngrams)
+        vectorizer, doc_term_matrix = make_doc_term_matrix(
+            corpus, min_freq_count=min_token_count, ngrams=ngrams
+        )
         model = textacy.tm.TopicModel("nmf", n_topics=n_topics)
         model.fit(doc_term_matrix)
         doc_topic_matrix = model.transform(doc_term_matrix)
@@ -221,7 +254,9 @@ if mode == "Topics" and uploaded_file is not None:
 if mode == "Similar Sentences" and uploaded_file is not None:
     "## Similar Sentences"
     if corpus.n_docs > 1000:
-        st.warning(f"Your search has more than {warning_count} records. This can be slow")
+        st.warning(
+            f"Your search has more than {warning_count} records. This can be slow"
+        )
 
     input_sentence = st.text_input(
         "Enter your sentence to which you want to find similar examples",
@@ -236,7 +271,9 @@ if mode == "Similar Sentences" and uploaded_file is not None:
         max_value=10,
         value=3,
     )
-    similarity_cutoff = st.slider("Similarity Cutoff", min_value=1, max_value=100, value=70) / 100.0
+    similarity_cutoff = (
+        st.slider("Similarity Cutoff", min_value=1, max_value=100, value=70) / 100.0
+    )
     for i, doc in enumerate(corpus):
         score = textacy.similarity.word2vec(input_doc, doc)
         if score >= similarity_cutoff and sent_count > 0:
@@ -248,10 +285,14 @@ if mode == "Similar Sentences" and uploaded_file is not None:
 
 if mode == "Sentence Explorer" and uploaded_file is not None:
     "## Find Sentences with Specific Words"
-    input_sentence = st.text_input("Enter the words (separated by space)", value="ticket", max_chars=300)
+    input_sentence = st.text_input(
+        "Enter the words (separated by space)", value="ticket", max_chars=300
+    )
     input_doc = textacy.make_spacy_doc(input_sentence, lang="en")
     input_tokens: set = set([str(x) for x in get_tokens(input_doc)])
-    sent_count = st.slider("Maximum number of sentences that you want", min_value=1, max_value=10, value=3)
+    sent_count = st.slider(
+        "Maximum number of sentences that you want", min_value=1, max_value=10, value=3
+    )
 
     for i, doc in enumerate(corpus):
         doc_tokens = set([str(x) for x in get_tokens(doc)])
@@ -269,7 +310,9 @@ if mode == "Generate Sentences":
         "Enter sentence which you want to augment?",
         value="When is my credit card bill due?",
     )
-    min_freq_count = st.slider("How many tries do you want to make?", value=1, min_value=1, max_value=5)
+    min_freq_count = st.slider(
+        "How many tries do you want to make?", value=1, min_value=1, max_value=5
+    )
 
     intent = st.text_input("Enter a 2 word intent please", value="Due Date")
     append_phrase = f"Sentence: {input_sentence}\nIntent: {intent}\n Paraphrase:"
@@ -308,7 +351,9 @@ if mode == "Generate Sentences":
     )
 
     input_api_key = st.text_input("Enter your GPT3 key")
-    engine_id = st.selectbox("Engine Id", options=["davinci", "davinci-beta", "curie", "curie-beta"])
+    engine_id = st.selectbox(
+        "Engine Id", options=["davinci", "davinci-beta", "curie", "curie-beta"]
+    )
 
     import openai
 
@@ -327,12 +372,16 @@ if mode == "Generate Sentences":
         return response
 
     try:
-        response = calling_our_simulation_overlords(prompt=prompt, min_freq_count=min_freq_count)
+        response = calling_our_simulation_overlords(
+            prompt=prompt, min_freq_count=min_freq_count
+        )
     except Exception as e:
         raise (
             f"You will need a GPT3 key. Please contact Deepak Singh for the same. Do NOT share the key with your teammates. This key might be reset every 5-7 days.\nDeveloper Info: {e}"
         )
-    generated_sentences = [choice["text"].strip() for choice in response.to_dict()["choices"]]
+    generated_sentences = [
+        choice["text"].strip() for choice in response.to_dict()["choices"]
+    ]
 
     "### Output Sentence"
     for idx, sentence in enumerate(list(set(generated_sentences))):
