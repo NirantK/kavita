@@ -29,7 +29,7 @@ def make_corpus(
     df: pd.DataFrame, col_name: str, min_token_count: int
 ) -> textacy.Corpus:
     en = textacy.load_spacy_lang("en", disable=("parser","ner", "tagger", "textcat"))
-    spacy_records = df[col_name].apply(lambda x: textacy.make_spacy_doc(x, lang=en))
+    spacy_records = df[col_name].apply(lambda x: textacy.make_spacy_doc(str(x), lang=en))
     long_records = [
         record for record in spacy_records if len(record) >= min_token_count
     ]
