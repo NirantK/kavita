@@ -105,7 +105,7 @@ if uploaded_file is not None:
             min_value=2,
             max_value=10,
         )
-    with st.runner("Making Corpus Now!"):
+    with st.spinner("Making Corpus Now!"):
         corpus = make_corpus(df, col_name=col_name, min_token_count=min_token_count)
     st.write(
         "Records for Analysis:",
