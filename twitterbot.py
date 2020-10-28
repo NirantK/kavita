@@ -31,7 +31,7 @@ def mention_followers():
     followers = twitter_API.followers()
     for follower in followers:
         print(follower," ")
-        twitter_API.update_status('hello yes this is a spam again wot can i do -_- @' + follower.screen_name)
+        twitter_API.update_status('goodnight:) @' + follower.screen_name)
 while True:
     mention_followers()
     time.sleep(3600)
