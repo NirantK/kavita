@@ -4,13 +4,6 @@ import os
 import streamlit as st 
 #credentials = yaml.load(open('TestbaseRadhika/.github/workflows/secrets.yaml'))
 
-#CONSUMER_KEY = credentials['env']['CONSUMER_KEY']
-#CONSUMER_SECRET = credentials['env']['CONSUME_SECRET']
-#ACCESS_KEY = credentials['env']['ACCESS_KEY']
-#ACCESS_SECRET = credentials['env']['ACCESS_SECRET']
-#print(os.environ)
-#print("Hello the key is this - ")
-#print(os.environ['CONSUMER_KEY'])
 st.title("HinglishBot: Sentiment Analysis Tool")
 st.image(
     image="https://verloop.io/wp-content/uploads/2020/08/cropped-VP.io-Website-Grey@2x.png"
@@ -26,13 +19,21 @@ print('just a few more steps to finish this bot')
 
 twitter_API = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
-
-def mention_followers():
-    followers = twitter_API.followers()
+followers = []
+def mention_followers(followers: list) -> None:
     for follower in followers:
         print(follower," ")
-        twitter_API.update_status('goodnight:) @' + follower.screen_name)
-while True:
-    mention_followers()
-    time.sleep(3600)
+        twitter_API.update_status('Steps to mute this bot, follow in the next tweet @' + follower.screen_name)
+    
 
+def follower_count()->list:
+    followers = twitter_API.followers()
+    return (followers)
+
+num = []
+num = follower_count()
+
+for i in range(len(num)):
+    mention_followers(num)
+    sleep(3600)
+    
