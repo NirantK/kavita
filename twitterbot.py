@@ -32,8 +32,6 @@ def follower_count()->list:
 
 num = []
 num = follower_count()
-
-for i in range(len(num)):
-    mention_followers(num)
-    sleep(3600)
+mention_followers(num)
+    
     
