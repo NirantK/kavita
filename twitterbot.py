@@ -23,7 +23,7 @@ followers = []
 def mention_followers(followers: list) -> None:
     for follower in followers:
         print(follower," ")
-        twitter_API.update_status('yes this is annoying, ugh @' + follower.screen_name)
+        twitter_API.update_status('Hello good morning, see this - https://twitter.com/meghanabhange/status/1312257040694165505/photo/2  @' + follower.screen_name)
         
     
 
