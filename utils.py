@@ -1,4 +1,5 @@
 import re
+import tweepy
 def get_twitter_api(auth):
     twitter_API = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
     return twitter_API
