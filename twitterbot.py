@@ -33,11 +33,17 @@ dummy_tweet = "enter a tweet url here, eg - https://twitter.com/Twitter/status/1
 preview_count = 9
 warning_count = 10000
 api = get_twitter_api(auth)
-list_of_display_messages = ["Asking the crowds what they think", "The committee is making up it's mind", "The crew is coordinating with their captain"]
+list_of_display_messages = [
+    "Asking the crowds what they think",
+    "The committee is making up it's mind",
+    "The crew is coordinating with their captain",
+]
 tweet_url = st.text_input("Enter Tweet URL", dummy_tweet)
+import random
+
 if not (tweet_url == dummy_tweet):
     tweet = get_tweet(tweet_url, api)
     st.write("Tweet: ", tweet)
-    with st.spinner("Asking the crowe")
-    sentiment = mood(tweet)
-    st.write("Answer: ", sentiment)
+    with st.spinner(random.choice(list_of_display_messages)):
+        sentiment = mood(tweet)
+        st.write(sentiment)
