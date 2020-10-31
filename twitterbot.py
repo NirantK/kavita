@@ -1,8 +1,10 @@
-import tweepy
-import time
 import os
-import streamlit as st
 import re
+import time
+
+import streamlit as st
+import tweepy
+
 from sentiment_detection import mood
 from utils import get_tweet, get_twitter_api
 
