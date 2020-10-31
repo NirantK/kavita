@@ -6,7 +6,23 @@ import streamlit as st
 import tweepy
 
 from sentiment_detection import mood
-from utils import get_tweet, get_twitter_api
+
+
+def get_twitter_api(auth):
+    twitter_API = tweepy.API(
+        auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True
+    )
+    return twitter_API
+
+
+def get_tweet(tweet_url: str, twitter_API):
+    try:
+        tweet_id = re.findall("(?<=status\/)(.*)(?=\?s)", tweet_url)
+        tweet = twitter_API.get_status(tweet_id[0]).text
+    except:
+        st.e("Invalid tweet, please try again")
+    return tweet
+
 
 # credentials = yaml.load(open('TestbaseRadhika/.github/workflows/secrets.yaml'))
 auth = tweepy.OAuthHandler(os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
@@ -17,9 +33,11 @@ dummy_tweet = "enter a tweet url here, eg - https://twitter.com/Twitter/status/1
 preview_count = 9
 warning_count = 10000
 api = get_twitter_api(auth)
+list_of_display_messages = ["Asking the crowds what they think", "The committee is making up it's mind", "The crew is coordinating with their captain"]
 tweet_url = st.text_input("Enter Tweet URL", dummy_tweet)
 if not (tweet_url == dummy_tweet):
     tweet = get_tweet(tweet_url, api)
     st.write("Tweet: ", tweet)
+    with st.spinner("Asking the crowe")
     sentiment = mood(tweet)
     st.write("Answer: ", sentiment)
