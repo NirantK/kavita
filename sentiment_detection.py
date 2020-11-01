@@ -2,11 +2,11 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipe
 import random
 class HinglishSentiment:
     def __init__(self):
-        # self.model_name = "meghanabhange/Hinglish-Bert-Class"
-        # self.model = AutoModelForSequenceClassification.from_pretrained(self.model_name)
-        # self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-        # self.classifier = pipeline('sentiment-analysis', model=self.model, tokenizer=self.tokenizer)
-        self.classifier = pipeline('sentiment-analysis')
+        self.model_name = "meghanabhange/Hinglish-Bert-Class"
+        self.model = AutoModelForSequenceClassification.from_pretrained(self.model_name)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+        self.classifier = pipeline('sentiment-analysis', model=self.model, tokenizer=self.tokenizer)
+        # self.classifier = pipeline('sentiment-analysis')
 
     def mood(self, tweet: str) -> str:
         sentiment = self.classifier(tweet)[0]["label"]
