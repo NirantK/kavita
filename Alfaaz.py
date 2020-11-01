@@ -30,6 +30,7 @@ auth.set_access_token(os.environ["ACCESS_KEY"], os.environ["ACCESS_SECRET"])
 st.title("HinglishBot: Sentiment Analysis Tool")
 
 dummy_tweet = "enter a tweet url here, eg - https://twitter.com/Twitter/status/1320822556614676480"
+tweet
 preview_count = 9
 warning_count = 10000
 api = get_twitter_api(auth)
