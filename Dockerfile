@@ -10,17 +10,17 @@ RUN bash -c 'echo -e "\
 [server]\n\
 enableCORS = false\n\
 " > /root/.streamlit/config.toml'
-RUN apt-get update && apt-get install
+RUN apt-get update && apt-get install wget
 ADD requirements.txt .
 ADD Alfaaz.py .
-
-EXPOSE 8501
-RUN pip install -r requirements.txt
-RUN pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 ADD sentiment_detection.py .
 RUN mkdir Hinglish-Bert-Class
-RUN wget https://s3.amazonaws.com/models.huggingface.co/bert/meghanabhange/Hinglish-Bert-Class/config.json ./Hinglish-Bert-Class
-RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/pytorch_model.bin ./Hinglish-Bert-Class
-RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/special_tokens_map.json ./Hinglish-Bert-Class
-RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/tokenizer_config.json ./Hinglish-Bert-Class
-RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/vocab.txt ./Hinglish-Bert-Class
+RUN wget https://s3.amazonaws.com/models.huggingface.co/bert/meghanabhange/Hinglish-Bert-Class/config.json -O ./Hinglish-Bert-Class/config.json
+RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/pytorch_model.bin -O ./Hinglish-Bert-Class/pytorch_model.bin
+RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/special_tokens_map.json -O ./Hinglish-Bert-Class/special_tokens_map.json
+RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/tokenizer_config.json -O ./Hinglish-Bert-Class/tokenizer_config.json
+RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/vocab.txt -O ./Hinglish-Bert-Class/vocab.txt
+
+RUN pip install -r requirements.txt
+RUN pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+EXPOSE 8501
