@@ -9,7 +9,7 @@ class HinglishSentiment:
         self.classifier = pipeline('sentiment-analysis')
 
     def mood(self, tweet: str) -> str:
-        sentiment = self.classifier(tweet)
+        sentiment = self.classifier(tweet)[0]["label"]
         variations = [
             f"Oh, your tweet is {sentiment}",
             f"I guess this tweet is {sentiment}",
