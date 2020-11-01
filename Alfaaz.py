@@ -50,11 +50,11 @@ list_of_display_messages = [
 ]
 tweet_url = st.text_input("Enter Tweet URL", dummy_tweet)
 import random
-detector = load_model()
 
 if not (tweet_url == dummy_tweet):
     tweet = get_tweet(tweet_url, api)
     st.write("Tweet: ", tweet)
     with st.spinner(random.choice(list_of_display_messages)):
+        detector = load_model()
         sentiment = detector.mood(tweet)
         st.write(sentiment)
