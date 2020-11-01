@@ -1,4 +1,4 @@
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, AdapterConfig, pipeline
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 import random
 class HinglishSentiment:
     def __init__(self, model_name="meghanabhange/Hinglish-Bert-Class"):
