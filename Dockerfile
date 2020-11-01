@@ -11,7 +11,7 @@ RUN bash -c 'echo -e "\
 enableCORS = false\n\
 " > /root/.streamlit/config.toml'
 RUN apt-get update && apt-get install
-RUN apt-install wget
+RUN apt-get install wget
 ADD requirements.txt .
 ADD Alfaaz.py .
 ADD sentiment_detection.py .
@@ -21,6 +21,7 @@ RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/pytorch_mo
 RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/special_tokens_map.json -O ./Hinglish-Bert-Class/special_tokens_map.json
 RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/tokenizer_config.json -O ./Hinglish-Bert-Class/tokenizer_config.json
 RUN wget https://cdn.huggingface.co/meghanabhange/Hinglish-Bert-Class/vocab.txt -O ./Hinglish-Bert-Class/vocab.txt
+
 
 RUN pip install -r requirements.txt
 RUN pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
