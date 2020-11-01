@@ -20,7 +20,7 @@ def get_tweet(tweet_url: str, twitter_API):
         tweet = twitter_API.get_status(tweet_id[0]).full_text
     except:
         st.error("Invalid tweet, please try again")
-        tweet = "Invalid tweet, please try again"
+        return
     return tweet
 
 def verify_credentials(twitter_API):
@@ -52,7 +52,8 @@ import random
 detector = load_model()
 if not (tweet_url == dummy_tweet):
     tweet = get_tweet(tweet_url, api)
-    st.write("Tweet: ", tweet)
-    with st.spinner(random.choice(list_of_display_messages)):
-        sentiment = detector.mood(tweet)
-        st.write(sentiment)
+    if tweet:
+        st.write("Tweet: ", tweet)
+        with st.spinner(random.choice(list_of_display_messages)):
+            sentiment = detector.mood(tweet)
+            st.write(sentiment)
