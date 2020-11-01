@@ -12,6 +12,7 @@ enableCORS = false\n\
 " > /root/.streamlit/config.toml'
 RUN apt-get update && apt-get install
 ADD requirements.txt .
+ADD Alfaaz.py .
 
 EXPOSE 8501
 RUN pip install -r requirements.txt
