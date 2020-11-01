@@ -7,7 +7,6 @@ import tweepy
 
 from sentiment_detection import HinglishSentiment
 
-@st.cache(suppress_st_warning=True)
 def get_twitter_api(auth):
     twitter_API = tweepy.API(
         auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True
@@ -18,7 +17,7 @@ def get_twitter_api(auth):
 def get_tweet(tweet_url: str, twitter_API):
     try:
         tweet_id = re.findall("(?<=status\/)(.*)(?=\?s)", tweet_url)
-        tweet = twitter_API.get_status(tweet_id[0]).text
+        tweet = twitter_API.get_status(tweet_id[0]).full_text
     except:
         st.error("Invalid tweet, please try again")
         tweet = "Invalid tweet, please try again"
