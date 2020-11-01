@@ -1,2 +1,4 @@
 streamlit==0.70.0
 tweepy==3.9.0
+transformers==3.4.0
+'git+https://github.com/adapter-hub/adapter-transformers.git'

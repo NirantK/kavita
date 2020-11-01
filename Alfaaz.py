@@ -5,7 +5,7 @@ import time
 import streamlit as st
 import tweepy
 
-from sentiment_detection import mood
+from sentiment_detection import HinglishSentiment
 
 
 def get_twitter_api(auth):
@@ -55,5 +55,6 @@ if not (tweet_url == dummy_tweet):
     tweet = get_tweet(tweet_url, api)
     st.write("Tweet: ", tweet)
     with st.spinner(random.choice(list_of_display_messages)):
-        sentiment = mood(tweet)
+        detector = HinglishSentiment()
+        sentiment = detector.mood(tweet)
         st.write(sentiment)
