@@ -16,7 +16,9 @@ def get_twitter_api(auth):
 
 def get_tweet(tweet_url: str, twitter_API):
     try:
-        tweet_id = re.findall("(?<=status\/)(.*)(?=\?s)", tweet_url)
+        tweet_id = re.findall("(?<=status\/)(.*)", tweet_url)
+        if tweet_id[-5:]=="?s=20":
+            tweet_id = tweet_id[:-5]
         tweet = twitter_API.get_status(tweet_id[0]).text
     except:
         st.error("Invalid tweet, please try again")
