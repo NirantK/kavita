@@ -7,7 +7,7 @@ import tweepy
 
 from sentiment_detection import HinglishSentiment
 
-
+@st.cache(suppress_st_warning=True)
 def get_twitter_api(auth):
     twitter_API = tweepy.API(
         auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True
@@ -50,11 +50,11 @@ list_of_display_messages = [
 ]
 tweet_url = st.text_input("Enter Tweet URL", dummy_tweet)
 import random
+detector = load_model()
 
 if not (tweet_url == dummy_tweet):
     tweet = get_tweet(tweet_url, api)
     st.write("Tweet: ", tweet)
     with st.spinner(random.choice(list_of_display_messages)):
-        detector = HinglishSentiment()
         sentiment = detector.mood(tweet)
         st.write(sentiment)
