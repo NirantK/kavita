@@ -1,4 +1,4 @@
 streamlit==0.70.0
 tweepy==3.9.0
-torch
+pytorch==1.6.0 torchvision==0.7.0 cpuonly -c pytorch
 transformers==3.4.0
