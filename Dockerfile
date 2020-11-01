@@ -11,7 +11,7 @@ RUN bash -c 'echo -e "\
 enableCORS = false\n\
 " > /root/.streamlit/config.toml'
 RUN apt-get update && apt-get install
-RUN apt-get install wget
+RUN apt-get -y install wget
 ADD requirements.txt .
 ADD Alfaaz.py .
 ADD sentiment_detection.py .
