@@ -21,6 +21,7 @@ def get_tweet(tweet_url: str, twitter_API):
         tweet = twitter_API.get_status(tweet_id[0]).text
     except:
         st.error("Invalid tweet, please try again")
+        tweet = "Invalid tweet, please try again"
     return tweet
 
 
