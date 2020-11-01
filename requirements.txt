@@ -1,4 +1,4 @@
 streamlit==0.70.0
 tweepy==3.9.0
-'torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html'
+pytorch-cpu torchvision-cpu -c pytorch
 transformers==3.4.0
