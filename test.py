@@ -1,10 +1,10 @@
 import unittest
 
-from Alfaaz import get_tweet
+from Alfaaz import get_tweet, get_twitter_api
 from sentiment_detection import HinglishSentiment
 
 
-class TestHinglishSentiement:
+class TestHinglishSentiement(unittest.TestCase):
     def setUp(self):
         self.detector = HinglishSentiment()
 
@@ -45,14 +45,16 @@ class TestHinglishSentiement:
         self.assertEqual(output, "NEUTRAL")
 
 
-class TestUtilityFunctions:
+class TestUtilityFunctions(unittest.TestCase):
+    def setUp(self):
+        self.api = get_twitter_api()
     def test_get_tweet(self):
         output = get_tweet(
-            "https://twitter.com/breezybadgerr/status/1322883382586437632?s=20"
+            "https://twitter.com/breezybadgerr/status/1322883382586437632?s=20", self.api
         )
-        self.assertEqual(output, "I'm just happy to see Vettel on #5. #ImolaGP")
+        self.assertEqual(output, "I'm just happy to see Vettel on #5. \n#ImolaGP")
 
         output = get_tweet(
-            "https://twitter.com/breezybadgerr/status/1322883382586437632"
+            "https://twitter.com/breezybadgerr/status/1322883382586437632", self.api
         )
-        self.assertEqual(output, "I'm just happy to see Vettel on #5. #ImolaGP")
+        self.assertEqual(output, "I'm just happy to see Vettel on #5. \n#ImolaGP")
