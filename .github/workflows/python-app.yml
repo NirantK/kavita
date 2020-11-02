@@ -26,5 +26,10 @@ jobs:
         pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Tests
+      env:
+          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
+          ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}
+          CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+          CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}  
       run: |
         python -m unittest
