@@ -48,9 +48,11 @@ class TestHinglishSentiement(unittest.TestCase):
 class TestUtilityFunctions(unittest.TestCase):
     def setUp(self):
         self.api = get_twitter_api()
+
     def test_get_tweet(self):
         output = get_tweet(
-            "https://twitter.com/breezybadgerr/status/1322883382586437632?s=20", self.api
+            "https://twitter.com/breezybadgerr/status/1322883382586437632?s=20",
+            self.api,
         )
         self.assertEqual(output, "I'm just happy to see Vettel on #5. \n#ImolaGP")
 
