@@ -7,6 +7,7 @@ import tweepy
 
 from sentiment_detection import HinglishSentiment
 
+
 def get_twitter_api(auth):
     twitter_API = tweepy.API(
         auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True
@@ -17,7 +18,7 @@ def get_twitter_api(auth):
 def get_tweet(tweet_url: str, twitter_API):
     try:
         tweet_id = re.findall("(?<=status\/)(.*)", tweet_url)
-        if tweet_id[-5:]=="?s=20":
+        if tweet_id[-5:] == "?s=20":
             tweet_id = tweet_id[:-5]
         tweet = twitter_API.get_status(tweet_id[0]).text
     except:
@@ -31,6 +32,7 @@ def verify_credentials(twitter_API):
         print("Authentication Ok")
     except:
         print("Error during authentication")
+
 
 
 
@@ -51,6 +53,7 @@ list_of_display_messages = [
 ]
 tweet_url = st.text_input("Enter Tweet URL", dummy_tweet)
 import random
+
 detector = load_model()
 if not (tweet_url == dummy_tweet):
     tweet = get_tweet(tweet_url, api)
