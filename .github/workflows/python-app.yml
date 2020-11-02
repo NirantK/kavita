@@ -5,7 +5,10 @@ name: Testing Framework
 
 on:
   push:
-    branches: [ main ]
+    branches: 
+      - main
+      - class
+      - dev
   pull_request:
     branches: [ main ]
 
