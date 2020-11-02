@@ -1,25 +1,29 @@
+import logging
 import os
+import random
 import re
 import time
 
 import streamlit as st
 import tweepy
-import logging
-import random
 
 from sentiment_detection import HinglishSentiment
 
 logger = logging.getLogger("hinglish")
 
+
 @st.cache(allow_output_mutation=True)
 def get_twitter_api():
-    auth = tweepy.OAuthHandler(os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
+    auth = tweepy.OAuthHandler(
+        os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"]
+    )
     auth.set_access_token(os.environ["ACCESS_KEY"], os.environ["ACCESS_SECRET"])
     twitter_API = tweepy.API(
         auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True
     )
     logger.info("Authenticated twitter API")
     return twitter_API
+
 
 def get_tweet(tweet_url: str, twitter_API):
     try:
@@ -41,6 +45,7 @@ def verify_credentials(twitter_API):
         print("Authentication Ok")
     except:
         print("Error during authentication")
+
 
 
 
