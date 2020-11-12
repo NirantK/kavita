@@ -11,21 +11,9 @@ logger = logging.getLogger("hinglish")
 
 class HinglishSentiment:
     def __init__(self):
-        try:
-            self.classifier = pipeline(
-                "sentiment-analysis", model="Hinglish-Bert-Class"
-            )
-        except:
-            try:
-                logger.exception("Model not in RAM, downloading it now.")
-                self.classifier = pipeline(
-                    "sentiment-analysis", model="meghanabhange/Hinglish-Bert-Class"
-                )
-            except:
-                logger.exception(
-                    "Using Normal Sentiment detection model insted of Hinglish"
-                )
-                self.classifier = pipeline("sentiment-analysis")
+        self.classifier = pipeline(
+            "sentiment-analysis", model="Hinglish-Bert-Class"
+        )
 
     def clean(self, tweet):
         text = tweet
