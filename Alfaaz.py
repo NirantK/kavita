@@ -34,7 +34,7 @@ def get_tweet(tweet_url: str, twitter_API):
         tweet = twitter_API.get_status(tweet_id[0]).text
         logger.info(f"Tweet Recieved : {tweet}")
     except:
-        st.error("Invalid tweet, please try again")
+        st.error("Sorry, bottie isn't able to fetch the tweet from the URL provided. Can you check your URL or try a different one?")
         logger.exception("Tweepy Error")
         return
     return tweet
