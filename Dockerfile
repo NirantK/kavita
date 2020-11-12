@@ -10,7 +10,7 @@ RUN bash -c 'echo -e "\
 [server]\n\
 enableCORS = false\n\
 " > /root/.streamlit/config.toml'
-RUN apt-get update && apt-get install
+RUN apt-get update && apt-get install && apt-get install -y git
 RUN apt-get -y install wget
 ADD requirements.txt .
 ADD Alfaaz.py .
