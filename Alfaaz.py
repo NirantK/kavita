@@ -89,8 +89,6 @@ def verify_credentials(twitter_API):
         print("Error during authentication")
 
 
-
-
 def main():
 auth = tweepy.OAuthHandler(os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
 auth.set_access_token(os.environ["ACCESS_KEY"], os.environ["ACCESS_SECRET"])
