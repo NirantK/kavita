@@ -11,13 +11,10 @@ logger = logging.getLogger("hinglish")
 
 class HinglishSentiment:
     def __init__(self):
-        try :
-            self.model_name = "Hinglish-Bert-Class"
-            self.model = AutoModelForSequenceClassification.from_pretrained(self.model_name)
-            self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-            self.classifier = pipeline('sentiment-analysis', model=self.model, tokenizer=self.tokenizer)
-        except : 
-            logger.exception("Cannot Load Hinglish Model")
+        self.model_name = "Hinglish-Bert-Class"
+        self.model = AutoModelForSequenceClassification.from_pretrained(self.model_name)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+        self.classifier = pipeline('sentiment-analysis', model=self.model, tokenizer=self.tokenizer)
 
 
     def clean(self, tweet):
