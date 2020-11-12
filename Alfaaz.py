@@ -24,6 +24,14 @@ def get_tweet(tweet_url: str, twitter_API):
         tweet = "Invalid tweet, please try again"
     return tweet
 
+def verify_credentials(twitter_API):
+    try:
+        twitter_API.verify_credentials()
+        print("Authentication Ok")
+    except:
+        print("Error during authentication")
+
+
 
 # credentials = yaml.load(open('TestbaseRadhika/.github/workflows/secrets.yaml'))
 auth = tweepy.OAuthHandler(os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
@@ -35,6 +43,7 @@ dummy_tweet = "enter a tweet url here, eg - https://twitter.com/Twitter/status/1
 preview_count = 9
 warning_count = 10000
 api = get_twitter_api(auth)
+verify_credentials(api)
 list_of_display_messages = [
     "Asking the crowds what they think",
     "The committee is making up it's mind",
