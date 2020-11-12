@@ -25,12 +25,12 @@ class HinglishSentiment:
         text = re.sub(r"#\w+", "hashtag", text)
         text = re.sub(r"http\S+", "", text)
         text = emoji.demojize(text)
-        logger.info(f"Cleaned Text : {text}")
+        print(f"Cleaned Text : {text}")
         return text
 
     def mood(self, tweet: str, no_variation: bool = False) -> str:
         sentiment = self.classifier(self.clean(tweet))[0]["label"]
-        logger.info(f"Sentiment : {sentiment}")
+        print(f"Sentiment : {sentiment}")
         if no_variation:
             return sentiment
         variations = [
