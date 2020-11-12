@@ -46,7 +46,7 @@ def get_twitter_api():
     twitter_API = tweepy.API(
         auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True
     )
-    logger.info("Authenticated twitter API")
+    # logger.info("Authenticated twitter API")
     return twitter_API
 
 
@@ -73,16 +73,16 @@ def get_tweet(tweet_url: str, twitter_API):
     """
     try:
         tweet_id = re.findall("(?<=status\/)(.*)", tweet_url)
-        logger.info(f"tweet_id : {tweet_id}")
+        # logger.info(f"tweet_id : {tweet_id}")
         if tweet_id[-5:] == "?s=20":
             tweet_id = tweet_id[:-5]
         tweet = twitter_API.get_status(tweet_id[0]).text
-        logger.info(f"Tweet Recieved : {tweet}")
+        # logger.info(f"Tweet Recieved : {tweet}")
     except:
         st.error(
             "Sorry, bottie isn't able to fetch the tweet from the URL provided. Can you check your URL or try a different one?"
         )
-        logger.exception("Tweepy Error")
+        # logger.exception("Tweepy Error")
         return
     return tweet
 
