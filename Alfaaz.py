@@ -6,26 +6,27 @@ import time
 
 import streamlit as st
 import tweepy
+from dotenv import load_dotenv
 
 from sentiment_detection import HinglishSentiment
 
 logger = logging.getLogger("hinglish")
+load_dotenv()
 
-
-@st.cache(allow_output_mutation=True) #DO NOT CHANGE THIS. Now I forgot why this line is really important. But it is. Don't remove.
+# @st.cache(allow_output_mutation=True) #DO NOT CHANGE THIS. Now I forgot why this line is really important. But it is. Don't remove.
 def get_twitter_api():
-    """Authenticates the twitter API from env variables. 
+    """Authenticates the twitter API from env variables.
     ENV variables that are required are CONSUMER_KEY
     CONSUMER_SECRET, ACCESS_KEY, ACCESS_SECRET. Pass this
     using github secrets or directly in your app
 
-    Do not push these keys to git. 
+    Do not push these keys to git.
 
     Known issue with this function is that it takes too
-    log to autheticate and the authentication happens at 
-    every request. There is no way to just cache tweepy API. 
-    Thus this function is the speed bottleneck of this 
-    app. 
+    log to autheticate and the authentication happens at
+    every request. There is no way to just cache tweepy API.
+    Thus this function is the speed bottleneck of this
+    app.
 
     Returns:
         tweepy.API: Tweepy API which can be used to query
@@ -43,16 +44,16 @@ def get_twitter_api():
 
 
 def get_tweet(tweet_url: str, twitter_API):
-    """This gets tweets using tweepy API. 
+    """This gets tweets using tweepy API.
     Currently we are expecting tweets to come in two
-    formats. 
-    
+    formats.
+
     It would be either https://twitter.com/verloopio/status/1326787675181944840
     which is copied directly from the url bar or
     https://twitter.com/verloopio/status/1326787675181944840?s=20
-    Which is copied through share link option. 
+    Which is copied through share link option.
 
-    We are using regex to get the tweetID and then using that to 
+    We are using regex to get the tweetID and then using that to
     get the tweet from the URL
 
 
@@ -71,7 +72,9 @@ def get_tweet(tweet_url: str, twitter_API):
         tweet = twitter_API.get_status(tweet_id[0]).text
         logger.info(f"Tweet Recieved : {tweet}")
     except:
-        st.error("Sorry, bottie isn't able to fetch the tweet from the URL provided. Can you check your URL or try a different one?")
+        st.error(
+            "Sorry, bottie isn't able to fetch the tweet from the URL provided. Can you check your URL or try a different one?"
+        )
         logger.exception("Tweepy Error")
         return
     return tweet
