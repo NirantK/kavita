@@ -14,7 +14,13 @@ from sentiment_detection import HinglishSentiment
 logger = logging.getLogger("hinglish")
 load_dotenv()
 
-# @st.cache(allow_output_mutation=True) #DO NOT CHANGE THIS. Now I forgot why this line is really important. But it is. Don't remove.
+
+@st.cache(
+    suppress_st_warning=True,
+    show_spinner=False,
+    persist=True,
+    allow_output_mutation=True,
+)
 def get_twitter_api():
     """Authenticates the twitter API from env variables.
     ENV variables that are required are CONSUMER_KEY
@@ -87,6 +93,7 @@ def verify_credentials(twitter_API):
         print("Authentication Ok")
     except:
         print("Error during authentication")
+
 
 
 def main():

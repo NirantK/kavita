@@ -26,6 +26,14 @@ class TestHinglishSentiement(unittest.TestCase):
         )
         self.assertEqual(output, "POSITIVE")
 
+        output = self.detector.mood(
+            "mention Ohho badhiya Sheetal ji \
+            :beaming_face_with_smiling_eyes \
+            :good night :blue_heart:",
+            no_variation=True,
+        )
+        self.assertEqual(output, "POSITIVE")
+
     def test_negative(self):
         output = self.detector.mood(
             "Hum thaire puncture banane wale log\
@@ -35,11 +43,40 @@ class TestHinglishSentiement(unittest.TestCase):
         )
         self.assertEqual(output, "NEGATIVE")
 
+        output = self.detector.mood(
+            "I’m watching Scam 1992 right \
+            now and Rajat Kapoor saying Mein \
+            chutiya hoon kya lodu is the vitamin \
+            I needed today",
+            no_variation=True,
+        )
+        self.assertEqual(output, "NEGATIVE")
+
+        output = self.detector.mood(
+            "mention mention lol ye log pagal ho \
+            chuke hai.. kahi bhi kuch bhi bol rahe \
+            hai.. but its funny",
+            no_variation=True,
+        )
+        self.assertEqual(output, "NEGATIVE")
+
     def test_neutral(self):
         output = self.detector.mood(
             "mention :OK_hand:sir kya ap bta skte \
             h ki ye kb shoot hua tha :thinking_face:please \
             tell me sir please reply me… ",
+            no_variation=True,
+        )
+        self.assertEqual(output, "NEUTRAL")
+
+        output = self.detector.mood(
+            "I am not gussa...but i am gussa",
+            no_variation=True,
+        )
+        self.assertEqual(output, "NEUTRAL")
+
+        output = self.detector.mood(
+            "Arey Git. Chill out nah bro. Empty line hain.",
             no_variation=True,
         )
         self.assertEqual(output, "NEUTRAL")
