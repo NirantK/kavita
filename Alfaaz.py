@@ -3,6 +3,7 @@ import os
 import random
 import re
 import time
+import webbrowser
 
 import streamlit as st
 import tweepy
@@ -79,6 +80,7 @@ def get_tweet(tweet_url: str, twitter_API):
         return
     return tweet
 
+
 def verify_credentials(twitter_API):
     try:
         twitter_API.verify_credentials()
@@ -90,7 +92,6 @@ def verify_credentials(twitter_API):
 
 
 def main():
-# credentials = yaml.load(open('TestbaseRadhika/.github/workflows/secrets.yaml'))
 auth = tweepy.OAuthHandler(os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
 auth.set_access_token(os.environ["ACCESS_KEY"], os.environ["ACCESS_SECRET"])
 st.title("HinglishBot: Sentiment Analysis Tool")
@@ -108,5 +109,3 @@ list_of_display_messages = [
 tweet_url = st.text_input("Enter Tweet URL", dummy_tweet)
 import random
 
-if __name__ == "__main__":
-    main()

@@ -16,14 +16,16 @@ class HinglishSentiment:
                 "sentiment-analysis", model="Hinglish-Bert-Class"
             )
         except:
-            try :
+            try:
                 logger.exception("Model not in RAM, downloading it now.")
                 self.classifier = pipeline(
                     "sentiment-analysis", model="meghanabhange/Hinglish-Bert-Class"
                 )
-            except :
-                logger.exception("Using Normal Sentiment detection model insted of Hinglish")
-                self.classifier = pipeline('sentiment-analysis')
+            except:
+                logger.exception(
+                    "Using Normal Sentiment detection model insted of Hinglish"
+                )
+                self.classifier = pipeline("sentiment-analysis")
 
     def clean(self, tweet):
         text = tweet
