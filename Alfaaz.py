@@ -1,4 +1,3 @@
-import logging
 import os
 import random
 import re
@@ -11,7 +10,6 @@ from dotenv import load_dotenv
 
 from sentiment_detection import HinglishSentiment
 
-logger = logging.getLogger("hinglish")
 load_dotenv()
 
 

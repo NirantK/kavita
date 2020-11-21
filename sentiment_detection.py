@@ -1,4 +1,3 @@
-import logging
 import random
 import re
 
@@ -6,7 +5,6 @@ import emoji
 import streamlit as st
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
-logger = logging.getLogger("hinglish")
 
 
 class HinglishSentiment:
