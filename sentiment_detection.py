@@ -8,12 +8,21 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipe
 
 class HinglishSentiment:
     def __init__(self):
-        self.model_name = "Hinglish-Bert-Class"
-        self.model = AutoModelForSequenceClassification.from_pretrained(self.model_name)
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-        self.classifier = pipeline(
-            "sentiment-analysis", model=self.model, tokenizer=self.tokenizer
-        )
+        try:
+            self.classifier = pipeline(
+                "sentiment-analysis", model="Hinglish-Bert-Class"
+            )
+        except:
+            try:
+                logger.exception("Model not in RAM, downloading it now.")
+                self.classifier = pipeline(
+                    "sentiment-analysis", model="meghanabhange/Hinglish-Bert-Class"
+                )
+            except:
+                logger.exception(
+                    "Using Normal Sentiment detection model insted of Hinglish"
+                )
+                self.classifier = pipeline("sentiment-analysis")
 
     def clean(self, tweet):
         text = tweet
