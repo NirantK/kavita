@@ -14,12 +14,12 @@ class HinglishSentiment:
             )
         except:
             try:
-                logger.exception("Model not in RAM, downloading it now.")
+                print("Model not in RAM, downloading it now.")
                 self.classifier = pipeline(
                     "sentiment-analysis", model="meghanabhange/Hinglish-Bert-Class"
                 )
             except:
-                logger.exception(
+                print(
                     "Using Normal Sentiment detection model insted of Hinglish"
                 )
                 self.classifier = pipeline("sentiment-analysis")
