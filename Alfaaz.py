@@ -13,12 +13,12 @@ from sentiment_detection import HinglishSentiment
 load_dotenv()
 
 
-# @st.cache(
-#     suppress_st_warning=True,
-#     show_spinner=False,
-#     persist=True,
-#     allow_output_mutation=True,
-# )
+@st.cache(
+    suppress_st_warning=True,
+    show_spinner=False,
+    persist=True,
+    allow_output_mutation=True,
+)
 def get_twitter_api():
     """Authenticates the twitter API from env variables.
     ENV variables that are required are CONSUMER_KEY

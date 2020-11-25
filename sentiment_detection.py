@@ -6,7 +6,6 @@ import streamlit as st
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
 
-
 class HinglishSentiment:
     def __init__(self):
         self.model_name = "Hinglish-Bert-Class"
