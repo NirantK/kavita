@@ -80,6 +80,18 @@ class TestHinglishSentiement(unittest.TestCase):
             no_variation=True,
         )
         self.assertEqual(output, "NEUTRAL")
+        output = self.detector.mood(
+            "Aur kuch kaam toh bacha hi nahi hai iss desh mein."
+            no_variation=True,
+        )
+        self.assertEqual(output,"NEUTRAL")
+        output = self.detector.mood(
+            "Aacha tweleb ko kya bolenge tooter pe"
+            no_variation=True,
+        )
+        self.assertEqual(output,"NEUTRAL")
+
+
 
 
 class TestUtilityFunctions(unittest.TestCase):
@@ -97,3 +109,22 @@ class TestUtilityFunctions(unittest.TestCase):
             "https://twitter.com/breezybadgerr/status/1322883382586437632", self.api
         )
         self.assertEqual(output, "I'm just happy to see Vettel on #5. \n#ImolaGP")
+
+        output = get_tweet(
+            "https://twitter.com/growoverr/status/1329842358725222400?s=20", self.api
+        )
+        self.assertEqual(output, "11:11 bina padhai kare college ki degree")
+
+        output = get_tweet(
+            "https://twitter.com/growoverr/status/1321342899896807424?s=20", self.api
+
+        )
+        self.assertEqual(output, "Sometimes I read my own texts and wonder KOI KESE BAAT KARTA MUJHSE ????? mera aapna guess the gibberish challenge chal raha hai waha :(((")
+
+        output = get_tweet(
+            "https://twitter.com/youngestadult1/status/1329462598157312000?s=20", self.api
+
+        )
+        self.assertEqual(output, "Iss virus Covoid kaise karein?")
+
+

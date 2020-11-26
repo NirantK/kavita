@@ -9,19 +9,13 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipe
 class HinglishSentiment:
     def __init__(self):
         try:
-            self.classifier = pipeline(
-                "sentiment-analysis", model="Hinglish-Bert-Class"
-            )
+            self.classifier = pipeline("sentiment-analysis", model="Hinglish-Bert-Class")
         except:
             try:
                 print("Model not in RAM, downloading it now.")
-                self.classifier = pipeline(
-                    "sentiment-analysis", model="meghanabhange/Hinglish-Bert-Class"
-                )
+                self.classifier = pipeline("sentiment-analysis", model="meghanabhange/Hinglish-Bert-Class")
             except:
-                print(
-                    "Using Normal Sentiment detection model insted of Hinglish"
-                )
+                print("Using Normal Sentiment detection model insted of Hinglish")
                 self.classifier = pipeline("sentiment-analysis")
 
     def clean(self, tweet):
@@ -45,5 +39,7 @@ class HinglishSentiment:
             f"Guess what, this tweet is {sentiment}",
             f"It appears that your tweet is {sentiment}",
             f"I am just a bot, but I think this tweet is {sentiment}",
+            f"I am positive, that this tweet is {sentiment}!",
+            f"Why do I feel that the sentiment of this tweet is {sentiment}?" f"Seems like your tweet is {sentiment}!",
         ]
         return random.choice(variations)

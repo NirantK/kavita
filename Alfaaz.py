@@ -34,13 +34,9 @@ def get_twitter_api():
         tweepy.API: Tweepy API which can be used to query
             and tweet tweets.
     """
-    auth = tweepy.OAuthHandler(
-        os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"]
-    )
+    auth = tweepy.OAuthHandler(os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
     auth.set_access_token(os.environ["ACCESS_KEY"], os.environ["ACCESS_SECRET"])
-    twitter_API = tweepy.API(
-        auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True
-    )
+    twitter_API = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
     print("Authenticated twitter API")
     return twitter_API
 
@@ -108,7 +104,7 @@ def main():
     # Running this from main because in future we can use fire to give
     # more commandline options to this
     # st.title("HinglishBot: Sentiment Analysis Tool")
-    st.markdown("![img](https://i.ibb.co/Bg2SWF5/Copy-of-Hinglish-Bot.png)")
+    st.markdown("![img](https://raw.githubusercontent.com/NirantK/kavita/class/Hinglish-Bot-Image.png)")
 
     dummy_tweet = "enter a tweet url here, eg - https://twitter.com/Twitter/status/1320822556614676480"
 
