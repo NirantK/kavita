@@ -81,12 +81,12 @@ class TestHinglishSentiement(unittest.TestCase):
         )
         self.assertEqual(output, "NEUTRAL")
         output = self.detector.mood(
-            "Aur kuch kaam toh bacha hi nahi hai iss desh mein."
+            "Aur kuch kaam toh bacha hi nahi hai iss desh mein.",
             no_variation=True,
         )
         self.assertEqual(output,"NEUTRAL")
         output = self.detector.mood(
-            "Aacha tweleb ko kya bolenge tooter pe"
+            "Aacha tweleb ko kya bolenge tooter pe", 
             no_variation=True,
         )
         self.assertEqual(output,"NEUTRAL")
