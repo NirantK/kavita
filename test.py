@@ -60,6 +60,12 @@ class TestHinglishSentiement(unittest.TestCase):
         )
         self.assertEqual(output, "NEGATIVE")
 
+        output = self.detector.mood(
+            "Aacha tweleb ko kya bolenge tooter pe", 
+            no_variation=True,
+        )
+        self.assertEqual(output,"NEGATIVE")
+
     def test_neutral(self):
         output = self.detector.mood(
             "mention :OK_hand:sir kya ap bta skte \
@@ -85,11 +91,7 @@ class TestHinglishSentiement(unittest.TestCase):
             no_variation=True,
         )
         self.assertEqual(output,"NEUTRAL")
-        output = self.detector.mood(
-            "Aacha tweleb ko kya bolenge tooter pe", 
-            no_variation=True,
-        )
-        self.assertEqual(output,"NEUTRAL")
+        
 
 
 
